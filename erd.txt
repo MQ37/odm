@@ -1,0 +1,51 @@
+Table Facts {
+  timeDim int [ref: > TimeDim.id]
+  bookDim int [ref: > BookDim.id]
+  authorDim int [ref: > AuthorDim.id]
+  userDIm int [ref: > UserDim.id]
+  borrowingId int
+  durationDays int
+  bookRating decimal
+  authorRating decimal
+}
+
+Table TimeDim {
+  id int [pk]
+  day int
+  month int
+  year int
+  weekday int
+  fulldate date
+}
+
+Table BookDim {
+  id int [pk]
+  bookName varchar
+  releasedYear int
+  language varchar
+}
+
+Table GenreBook {
+  genreId int [ref: > Genre.id]
+  bookId int [ref: > BookDim.id]
+}
+
+Table Genre {
+  id int [pk]
+  genreName varchar
+}
+
+Table AuthorDim {
+  id int [pk]
+  authorName varchar
+  bornYear int
+  diedYear int
+}
+
+Table UserDim {
+  id int [pk]
+  userId int
+  firstName varchar
+  lastName varchar
+  fullName varchar
+}
