@@ -3,10 +3,25 @@ Table Facts {
   bookDim int [ref: > BookDim.id]
   authorDim int [ref: > AuthorDim.id]
   userDIm int [ref: > UserDim.id]
+  editionDim int [ref: > EditionDim.id]
+  publisherDim int [ref: > PublisherDim.id]
   borrowingId int
   durationDays int
   bookRating decimal
   authorRating decimal
+}
+
+Table EditionDim {
+  id int [pk]
+  isbn varchar
+  numberPages int
+  isDigital bool
+  language int [ref: > Language.id]
+}
+
+Table PublisherDim {
+  id int [pk]
+  name varchar
 }
 
 Table TimeDim {
@@ -15,6 +30,7 @@ Table TimeDim {
   month int
   year int
   weekday int
+  week int
   fulldate date
 }
 
@@ -22,7 +38,7 @@ Table BookDim {
   id int [pk]
   bookName varchar
   releasedYear int
-  language varchar
+  
 }
 
 Table GenreBook {
@@ -33,6 +49,11 @@ Table GenreBook {
 Table Genre {
   id int [pk]
   genreName varchar
+}
+
+Table Language {
+  id int [pk]
+  languageName varchar
 }
 
 Table AuthorDim {
@@ -47,5 +68,6 @@ Table UserDim {
   userId int
   firstName varchar
   lastName varchar
-  fullName varchar
+  bornYear int
+  isMale bool
 }
