@@ -1,0 +1,50 @@
+# Average age of readers by gender
+SELECT "Genres"."name" AS "Genres__name", "Users"."sex" AS "Users__sex", AVG("Users"."age") AS "avg"
+FROM "interactions"
+LEFT JOIN "users" AS "Users" ON "interactions"."user_id" = "Users"."user_id" LEFT JOIN "items_genres" AS "Items Genres" ON "interactions"."item_id" = "Items Genres"."item_id" LEFT JOIN "genres" AS "Genres" ON "Items Genres"."genre_id" = "Genres"."genre_id"
+WHERE ("Genres"."name" IS NOT NULL)
+   AND ("Users"."sex" IS NOT NULL) AND (("Users"."sex" <> '')
+    OR ("Users"."sex" IS NULL))
+GROUP BY "Genres"."name", "Users"."sex"
+ORDER BY "Genres"."name" ASC, "Users"."sex" ASC
+
+# Popularity of authors by gender
+SELECT "Authors"."name" AS "Authors__name", "Users"."sex" AS "Users__sex", COUNT(*) AS "count"
+FROM "interactions"
+LEFT JOIN "users" AS "Users" ON "interactions"."user_id" = "Users"."user_id" LEFT JOIN "items_authors" AS "Items Authors" ON "interactions"."item_id" = "Items Authors"."item_id" LEFT JOIN "authors" AS "Authors" ON "Items Authors"."author_id" = "Authors"."author_id"
+WHERE ("Authors"."name" IS NOT NULL)
+   AND ("Users"."sex" IS NOT NULL) AND (("Users"."sex" <> '')
+    OR ("Users"."sex" IS NULL))
+GROUP BY "Authors"."name", "Users"."sex"
+ORDER BY "Authors"."name" ASC, "Users"."sex" ASC
+
+# Popularity of authors by gender and age group
+SELECT "source"."Authors__name" AS "Authors__name", "source"."Users__sex" AS "Users__sex", "source"."Users__age_group" AS "Users__age_group", "source"."count" AS "count"
+FROM (SELECT "Authors"."name" AS "Authors__name", "Users"."sex" AS "Users__sex", "Users"."age_group" AS "Users__age_group", COUNT(*) AS "count" FROM "interactions"
+LEFT JOIN "items_authors" AS "Items Authors" ON "interactions"."item_id" = "Items Authors"."item_id" LEFT JOIN "authors" AS "Authors" ON "Items Authors"."author_id" = "Authors"."author_id" LEFT JOIN "users" AS "Users" ON "interactions"."user_id" = "Users"."user_id"
+GROUP BY "Authors"."name", "Users"."sex", "Users"."age_group"
+ORDER BY "Authors"."name" ASC, "Users"."sex" ASC, "Users"."age_group" ASC) AS "source"
+WHERE ("source"."Authors__name" IS NOT NULL)
+   AND (("source"."Authors__name" <> '')
+    OR ("source"."Authors__name" IS NULL)) AND ("source"."Users__sex" IS NOT NULL) AND (("source"."Users__sex" <> '') OR ("source"."Users__sex" IS NULL)) AND ("source"."Users__age_group" IS NOT NULL) AND (("source"."Users__age_group" <> '') OR ("source"."Users__age_group" IS NULL))
+LIMIT 1048575
+
+# Popularity of genres by gender
+SELECT "Genres"."name" AS "Genres__name", "Users"."sex" AS "Users__sex", COUNT(*) AS "count"
+FROM "interactions"
+LEFT JOIN "items_genres" AS "Items Genres" ON "interactions"."item_id" = "Items Genres"."item_id" LEFT JOIN "genres" AS "Genres" ON "Items Genres"."genre_id" = "Genres"."genre_id" LEFT JOIN "users" AS "Users" ON "interactions"."user_id" = "Users"."user_id"
+WHERE ("Genres"."name" IS NOT NULL)
+   AND ("Users"."sex" IS NOT NULL) AND (("Users"."sex" <> '')
+    OR ("Users"."sex" IS NULL))
+GROUP BY "Genres"."name", "Users"."sex"
+ORDER BY "Genres"."name" ASC, "Users"."sex" ASC
+
+# Popularity of genres by gender and age group
+SELECT "Genres"."name" AS "Genres__name", "Users"."sex" AS "Users__sex", "Users"."age_group" AS "Users__age_group", COUNT(*) AS "count"
+FROM "interactions"
+LEFT JOIN "items_genres" AS "Items Genres" ON "interactions"."item_id" = "Items Genres"."genre_id" LEFT JOIN "genres" AS "Genres" ON "Items Genres"."genre_id" = "Genres"."genre_id" LEFT JOIN "users" AS "Users" ON "interactions"."user_id" = "Users"."user_id"
+WHERE ("Genres"."name" IS NOT NULL)
+   AND ("Users"."sex" IS NOT NULL) AND (("Users"."sex" <> '')
+    OR ("Users"."sex" IS NULL))
+GROUP BY "Genres"."name", "Users"."sex", "Users"."age_group"
+ORDER BY "Genres"."name" ASC, "Users"."sex" ASC, "Users"."age_group" ASC
